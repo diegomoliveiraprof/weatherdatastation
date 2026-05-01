@@ -11,9 +11,11 @@ sudo systemctl enable postgresql
 sudo systemctl start postgresql
 
 # Configura banco e usuário
+#substituir pela sua senha
 sudo -u postgres psql <<EOF
 CREATE DATABASE wds_db;
-CREATE USER wds_user WITH PASSWORD 'sua_senha_segura'; #substituir pela sua senha
+#substituir pela sua senha
+CREATE USER wds_user WITH PASSWORD 'sua_senha_segura'; 
 ALTER ROLE wds_user SET client_encoding TO 'utf8';
 ALTER ROLE wds_user SET default_transaction_isolation TO 'read committed';
 ALTER ROLE wds_user SET timezone TO 'UTC';
