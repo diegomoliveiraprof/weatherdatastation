@@ -28,11 +28,17 @@ def safe_float(value):
 
 # 🔎 Filtros personalizados
 class WeatherDataFilter(django_filters.FilterSet):
+    #Filtro por data (sem hora)
     data = django_filters.DateFilter(field_name="hora", lookup_expr="date", label="Data")
+    #Filtro por intervalo de data
     data_range = django_filters.DateFromToRangeFilter(field_name="hora", label="Data Intervalo")
+    #Filtro por hora
     hora_only = django_filters.TimeFilter(field_name="hora", lookup_expr="time", label="Horário")
+    #Filtro por intervalo de temperatura
     temperatura_range = django_filters.RangeFilter(field_name="dht22_temp", label="Temp DHT22 Intervalo")
+    #Filtro por intervalo de umidade
     umidade_range = django_filters.RangeFilter(field_name="dht22_umid", label="Umidade DHT22 Intervalo")
+    #Filtro por intervalo de pluviometria
     pluvio_range = django_filters.RangeFilter(field_name="pluvio_mm", label="Chuva pluvio Intervalo")
 
     class Meta:
