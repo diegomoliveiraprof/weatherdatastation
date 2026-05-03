@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from .models import WeatherData
 from .serializers import WeatherDataSerializer
 from django_filters.rest_framework import DjangoFilterBackend
+import django_filters
 
 
 def safe_float(value):
@@ -17,21 +18,38 @@ def safe_float(value):
     except (ValueError, TypeError):
         return None
 
+
+# 🔎 Filtros personalizados
+class WeatherDataFilter(django_filters.FilterSet):
+    # filtro por data exata (sem hora)
+    data = django_filters.DateFilter(field_name="hora", lookup_expr="date")
+    # filtro por intervalo de datas
+    data_range = django_filters.DateFromToRangeFilter(field_name="hora")
+    # filtro apenas pela hora (sem data)
+    hora_only = django_filters.TimeFilter(field_name="hora", lookup_expr="time")
+
+    class Meta:
+        model = WeatherData
+        fields = [
+            'data',        # filtro por data
+            'data_range',  # filtro por intervalo de datas
+            'hora_only',   # filtro por hora (sem data)
+            'dht22_temp',
+            'dht22_umid',
+            'mq2',
+            'bme280_temp',
+            'gy30_class_lux',
+            'anemo_direcao',
+        ]
+
+
 class WeatherDataList(generics.ListAPIView):
     queryset = WeatherData.objects.all()
     serializer_class = WeatherDataSerializer
     permission_classes = []  # sem autenticação para GET
-    # habilitar filtros
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = [
-        'hora',
-        'dht22_temp',
-        'dht22_umid',
-        'mq2',
-        'bme280_temp',
-        'gy30_class_lux',
-        'anemo_direcao',
-    ]
+    filterset_class = WeatherDataFilter
+
 
 class WeatherDataUpload(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -72,4 +90,12 @@ class WeatherDataUpload(APIView):
                 anemo_grau=safe_float(row['Anemo(Grau)']),
                 anemo_direcao=row['Anemo(Direcao)'],  # string
             )
-        return Response({"status": "Dados inseridos com sucesso"})
+        return Response(
+            {
+                "status": "Upload realizado com sucesso",
+                "arquivo": file.name,
+                "linhas_processadas": count,
+                "timestamp": datetime.now().isoformat()
+            },
+            status=201
+        )
