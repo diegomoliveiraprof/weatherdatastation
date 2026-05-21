@@ -112,6 +112,16 @@ GRANT ALL PRIVILEGES ON DATABASE wds_db TO wds_user;
 
 ## 📄 Configuração no Django (`settings.py`)
 
+Preparação do ambiente:
+```bash
+sudo apt update
+sudo apt install python3-venv
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+
 Adapte a seção `DATABASES`:
 
 ```
