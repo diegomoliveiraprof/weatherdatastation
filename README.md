@@ -103,6 +103,23 @@ ALTER ROLE wds_user SET timezone TO 'UTC';
 
 GRANT ALL PRIVILEGES ON DATABASE wds_db TO wds_user;
 ```
+**Conceder permissão de criação no schema public**
+```sql
+--Ainda no console sql
+\c wds_db
+
+-- Permitir uso e criação no schema public
+GRANT USAGE ON SCHEMA public TO wds_user;
+GRANT CREATE ON SCHEMA public TO wds_user;
+
+-- Permitir acesso a tabelas e sequências existentes
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO wds_user;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO wds_user;
+
+-- Garantir que objetos futuros também fiquem acessíveis
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO wds_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO wds_user;
+```
 
 ### 5. Sair do psql
 
