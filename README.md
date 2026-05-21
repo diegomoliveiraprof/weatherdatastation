@@ -134,6 +134,8 @@ DATABASES = {
 1. Rode as migrações:
 
    ```
+   python manage.py makemigrations
+   python manage.py makemigrations WDS
    python manage.py migrate
    ```
 
