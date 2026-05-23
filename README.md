@@ -63,3 +63,12 @@ Explica como configurar rapidamente o projeto para rodar com python3 manage.py r
 
 Guia para ambiente de produção / deploy  
 Detalha como configurar PostgreSQL, Gunicorn e Nginx para rodar o sistema de forma estável e segura em servidores Linux.
+
+## 📚 Guias de Configuração
+Este projeto pode ser executado em diferentes ambientes, dependendo da finalidade:
+
+[Guia para ambiente de testes](https://github.com/diegomoliveiraprof/weatherdatastation/blob/main/guia_conf_testes.md)  
+Explica como configurar rapidamente o projeto para rodar com python3 manage.py runserver 0.0.0.0:8000, ideal para desenvolvimento e validação inicial.
+
+[Guia para ambiente de produção / deploy](https://github.com/diegomoliveiraprof/weatherdatastation/blob/main/guia_deploy.md)  
+Detalha como configurar PostgreSQL, Gunicorn e Nginx para rodar o sistema de forma estável e segura em servidores Linux.
