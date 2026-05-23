@@ -37,14 +37,23 @@ Este projeto é uma aplicação **Django + Django REST Framework** para coleta, 
 
 ## 🔑 Autenticação
 
-- O upload de CSV exige autenticação via **Token**.
+- O upload de JSON exige autenticação via **Token**.
 
 - Exemplo de requisição:
 
   ```bash
-  curl -X POST https://end_IP:8000/api/upload/ \
-    -H "Authorization: Token SEU_TOKEN_AQUI" \
-    -F "file=@dados_teste.csv"
+   POST /api/upload/ HTTP/1.1
+    Host: end_ip:8000
+    Authorization: Token seu_token
+    Content-Type: application/json
+  
+    {
+      "DHT22_Temp":"27.50",
+      "DHT22_Umid":"53.80",
+      "DataHora":"2026-05-21 13:08:25",
+      ...
+    }
+
   ```
 
 
