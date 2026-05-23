@@ -38,155 +38,21 @@ Integração com PostgreSQL para persistência dos dados.
 ---
 
 ## 🔑 Autenticação
+O upload de arquivos JSON exige autenticação via Token.
 
-- O upload de JSON exige autenticação via **Token**.
+Exemplo de requisição
+```Código
+POST /api/upload/ HTTP/1.1
+Host: SEU_IP:8000
+Authorization: Token SEU_TOKEN
+Content-Type: application/json
 
-- Exemplo de requisição:
-
-  ```bash
-   POST /api/upload/ HTTP/1.1
-    Host: end_ip:8000
-    Authorization: Token seu_token
-    Content-Type: application/json
-  
-    {
-      "DHT22_Temp":"27.50",
-      "DHT22_Umid":"53.80",
-      "DataHora":"2026-05-21 13:08:25",
-      ...
-    }
+{
+  "DHT22_Temp": "27.50",
+  "DHT22_Umid": "53.80",
+  "DataHora": "2026-05-21 13:08:25",
+  ...
+}
 
   ```
 
-
-
-# Banco de dados
-
-O projeto utiliza PostgreSQL
-
-## 🛠️ Instalação do PostgreSQL
-
-### Linux (Ubuntu/Debian)
-
-```
-sudo apt update
-sudo apt install postgresql postgresql-contrib
-```
-
-Inicializar o banco:
-
-```
-sudo postgresql-setup initdb
-sudo systemctl enable postgresql
-sudo systemctl start  postgresql
-```
-
-
-
-## 🛠️ Configuração do Banco
-
-### 1. Entrar no PostgreSQL
-
-No terminal:
-
-```
-sudo -u postgres psql
-```
-
-### 2. Criar o banco de dados
-
-```
-CREATE DATABASE wds_db;
-```
-
-### 3. Criar o usuário
-
-```
-CREATE USER wds_user WITH PASSWORD 'sua_senha_segura';
-```
-
-### 4. Dar permissões ao usuário
-
-```
-ALTER ROLE wds_user SET client_encoding TO 'utf8';
-ALTER ROLE wds_user SET default_transaction_isolation TO 'read committed';
-ALTER ROLE wds_user SET timezone TO 'UTC';
-
-GRANT ALL PRIVILEGES ON DATABASE wds_db TO wds_user;
-```
-**Conceder permissão de criação no schema public**
-```sql
---Ainda no console sql
-\c wds_db
-
--- Permitir uso e criação no schema public
-GRANT USAGE ON SCHEMA public TO wds_user;
-GRANT CREATE ON SCHEMA public TO wds_user;
-
--- Permitir acesso a tabelas e sequências existentes
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO wds_user;
-GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO wds_user;
-
--- Garantir que objetos futuros também fiquem acessíveis
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO wds_user;
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO wds_user;
-```
-
-### 5. Sair do psql
-
-```
-\q
-```
-
-## 📄 Configuração no Django (`settings.py`)
-
-Preparação do ambiente:
-```bash
-sudo apt update
-sudo apt install python3-venv
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-```
-
-
-Adapte a seção `DATABASES`:
-
-```
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'wds_db',
-        'USER': 'wds_user',
-        'PASSWORD': 'sua_senha_segura',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
-```
-
-
-
-## 🚀 Testar conexão
-
-1. Rode as migrações:
-
-   ```
-   python manage.py makemigrations
-   python manage.py makemigrations WDS
-   python manage.py migrate
-   ```
-
-2. Crie um superusuário:
-
-   ```
-   python manage.py createsuperuser
-   ```
-
-3. Inicie o servidor:
-
-   ```
-   python manage.py runserver
-   ```
-
-Se tudo estiver certo, o Django vai conectar ao PostgreSQL usando o usuário criado.
