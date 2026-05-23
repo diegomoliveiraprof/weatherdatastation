@@ -103,6 +103,23 @@ ALTER ROLE wds_user SET timezone TO 'UTC';
 
 GRANT ALL PRIVILEGES ON DATABASE wds_db TO wds_user;
 ```
+**Conceder permissão de criação no schema public**
+```sql
+--Ainda no console sql
+\c wds_db
+
+-- Permitir uso e criação no schema public
+GRANT USAGE ON SCHEMA public TO wds_user;
+GRANT CREATE ON SCHEMA public TO wds_user;
+
+-- Permitir acesso a tabelas e sequências existentes
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO wds_user;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO wds_user;
+
+-- Garantir que objetos futuros também fiquem acessíveis
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO wds_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO wds_user;
+```
 
 ### 5. Sair do psql
 
@@ -111,6 +128,16 @@ GRANT ALL PRIVILEGES ON DATABASE wds_db TO wds_user;
 ```
 
 ## 📄 Configuração no Django (`settings.py`)
+
+Preparação do ambiente:
+```bash
+sudo apt update
+sudo apt install python3-venv
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
 
 Adapte a seção `DATABASES`:
 
@@ -134,6 +161,8 @@ DATABASES = {
 1. Rode as migrações:
 
    ```
+   python manage.py makemigrations
+   python manage.py makemigrations WDS
    python manage.py migrate
    ```
 
