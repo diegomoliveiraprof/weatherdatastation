@@ -1,12 +1,11 @@
-import csv
 from datetime import datetime
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import WeatherData
-from .serializers import WeatherDataSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 import django_filters
+from .models import WeatherData
+from .serializers import WeatherDataSerializer
 
 
 def safe_float(value):
@@ -28,17 +27,11 @@ def safe_float(value):
 
 # 🔎 Filtros personalizados
 class WeatherDataFilter(django_filters.FilterSet):
-    #Filtro por data (sem hora)
     data = django_filters.DateFilter(field_name="hora", lookup_expr="date", label="Data")
-    #Filtro por intervalo de data
     data_range = django_filters.DateFromToRangeFilter(field_name="hora", label="Data Intervalo")
-    #Filtro por hora
     hora_only = django_filters.TimeFilter(field_name="hora", lookup_expr="time", label="Horário")
-    #Filtro por intervalo de temperatura
     temperatura_range = django_filters.RangeFilter(field_name="dht22_temp", label="Temp DHT22 Intervalo")
-    #Filtro por intervalo de umidade
     umidade_range = django_filters.RangeFilter(field_name="dht22_umid", label="Umidade DHT22 Intervalo")
-    #Filtro por intervalo de pluviometria
     pluvio_range = django_filters.RangeFilter(field_name="pluvio_mm", label="Chuva pluvio Intervalo")
 
     class Meta:
@@ -71,50 +64,45 @@ class WeatherDataUpload(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, format=None):
-        file = request.FILES['file']
-        decoded_file = file.read().decode('utf-8').splitlines()
-        reader = csv.DictReader(decoded_file)
+        data = request.data  # JSON enviado pelo Arduino
 
-        count = 0
-        for row in reader:
-            hora_str = row['Hora'].strip()
-            hora_str = hora_str[:10]  # garante 10 dígitos
-            hora_dt = datetime.strptime(hora_str, "%y%m%d%H%M")
+        try:
+            hora_dt = datetime.strptime(data.get("DataHora"), "%Y-%m-%d %H:%M:%S")
+        except Exception:
+            return Response({"error": "Formato de DataHora inválido"}, status=400)
 
-            WeatherData.objects.create(
-                hora=hora_dt,
-                dht22_temp=safe_float(row.get('DHT22(Temp)')),
-                dht22_umid=safe_float(row.get('DHT22(Umid)')),
-                dht22_ind_calor=safe_float(row.get('DHT22(Ind.Calor)')),
-                mq2=safe_float(row.get('MQ2')),
-                bme280_temp=safe_float(row.get('BME-280(Temp)')),
-                bme280_umi=safe_float(row.get('BME-280(Umi.)')),
-                bme280_press=safe_float(row.get('BME-280(Press.)')),
-                bme280_alti=safe_float(row.get('BME-280(Alti.)')),
-                gy30_lux=safe_float(row.get('GY30(Lux)')),
-                gy30_class_lux=row.get('GY30(Class.Lux)'),  # string
-                uv_gyml8511_uv=safe_float(row.get('UV GYML8511(UV)')),
-                uv_gyml8511_tensao=safe_float(row.get('UV GYML8511(Tensao)')),
-                uv_gyml8511_saida=safe_float(row.get('UV GYML8511(Saida)')),
-                mq137_ppm_media=safe_float(row.get('MQ-137(PPM Media)')),
-                mq137_ppm_instant=safe_float(row.get('MQ-137(PPM Instant)')),
-                uvcjmcu_indiuv=safe_float(row.get('UVcjmcu(IndiUV)')),
-                mq3=safe_float(row.get('MQ-3')),
-                mq4=safe_float(row.get('MQ-4')),
-                mq7=safe_float(row.get('MQ-7')),
-                pluvio_mm=safe_float(row.get('Pluvio.(MM)')),
-                anemo_vel_ms=safe_float(row.get('Anemo(Vel MS)')),
-                anemo_vel_kmh=safe_float(row.get('Anemo(Vel KMH)')),
-                anemo_grau=safe_float(row.get('Anemo(Grau)')),
-                anemo_direcao=row.get('Anemo(Direcao)'),  # string
-            )
-            count += 1
+        WeatherData.objects.create(
+            hora=hora_dt,
+            dht22_temp=safe_float(data.get("DHT22_Temp")),
+            dht22_umid=safe_float(data.get("DHT22_Umid")),
+            dht22_ind_calor=safe_float(data.get("DHT22_IndCalor")),
+            mq2=safe_float(data.get("MQ2")),
+            bme280_temp=safe_float(data.get("BME280_Temp")),
+            bme280_umi=safe_float(data.get("BME280_Umi")),
+            bme280_press=safe_float(data.get("BME280_Press")),
+            bme280_alti=safe_float(data.get("BME280_Alti")),
+            gy30_lux=safe_float(data.get("GY30_Lux")),
+            gy30_class_lux=data.get("GY30_ClassLux"),
+            uv_gyml8511_uv=safe_float(data.get("UVGYML8511_UV")),
+            uv_gyml8511_tensao=safe_float(data.get("UVGYML8511_Tensao")),
+            uv_gyml8511_saida=safe_float(data.get("UVGYML8511_Saida")),
+            mq137_ppm_media=safe_float(data.get("MQ137_PPMMedia")),
+            mq137_ppm_instant=safe_float(data.get("MQ137_PPMInstant")),
+            uvcjmcu_indiuv=safe_float(data.get("UVcjmcu_IndiUV")),
+            mq3=safe_float(data.get("MQ3")),
+            mq4=safe_float(data.get("MQ4")),
+            mq7=safe_float(data.get("MQ7")),
+            pluvio_mm=safe_float(data.get("Pluvio_MM")),
+            anemo_vel_ms=safe_float(data.get("Anemo_VelMS")),
+            anemo_vel_kmh=safe_float(data.get("Anemo_VelKMH")),
+            anemo_grau=safe_float(data.get("Anemo_Grau")),
+            anemo_direcao=data.get("Anemo_Direcao"),
+        )
 
         return Response(
             {
                 "status": "Upload realizado com sucesso",
-                "arquivo": file.name,
-                "linhas_processadas": count,
+                "linhas_processadas": 1,
                 "timestamp": datetime.now().isoformat()
             },
             status=201
