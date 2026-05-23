@@ -118,6 +118,9 @@ python manage.py createsuperuser
 python3 manage.py runserver 0.0.0.0:8000
 ```
 
-**Aviso importante**   Nesta configuração, o serviço só estará disponível **enquanto o comando** `python3 manage.py runserver 0.0.0.0:8000` estiver em execução. Essa abordagem é adequada apenas para **testes e desenvolvimento**, pois o servidor interno do Django não foi projetado para lidar com carga de produção ou oferecer recursos avançados de segurança.
+**Aviso importante**   Nesta configuração, o serviço só estará disponível **enquanto o comando** `python3 manage.py runserver 0.0.0.0:8000` estiver em execução. 
+
+
+Essa abordagem é adequada apenas para **testes e desenvolvimento**, pois o servidor interno do Django não foi projetado para lidar com carga de produção ou oferecer recursos avançados de segurança.
 
 Para colocar a aplicação em um **ambiente de produção**, é necessário configurar serviços adicionais como **Gunicorn** (WSGI) e **Nginx** (proxy reverso), além de ajustes de permissões, logs e HTTPS.
