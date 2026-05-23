@@ -4,14 +4,16 @@ Este projeto é uma aplicação **Django + Django REST Framework** para coleta, 
 
 ---
 
-## 🚀 Funcionalidades
+## 🚀 Funcionalidades   
+Upload de arquivos JSON com leituras de sensores.
 
-- Upload de arquivos **CSV** com leituras de sensores.
-- Conversão automática de valores inválidos (`nan`) para `NULL`.
-- API REST para consulta dos dados meteorológicos.
-- Filtros avançados via **django-filter** (por temperatura, direção do vento, etc.).
-- Documentação interativa da API via **Swagger UI** e **ReDoc**.
-- Integração com PostgreSQL para persistência dos dados.
+API REST para consulta dos dados meteorológicos.
+
+Filtros avançados via django-filter (por temperatura, direção do vento, etc.).
+
+Documentação interativa da API via Swagger UI e ReDoc.
+
+Integração com PostgreSQL para persistência dos dados.
 
 ---
 
