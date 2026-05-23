@@ -55,4 +55,11 @@ Content-Type: application/json
 }
 
   ```
+## 📚 Guias de Configuração
+Este projeto pode ser executado em diferentes ambientes, dependendo da finalidade:
 
+Guia para ambiente de testes  
+Explica como configurar rapidamente o projeto para rodar com python3 manage.py runserver 0.0.0.0:8000, ideal para desenvolvimento e validação inicial.
+
+Guia para ambiente de produção / deploy  
+Detalha como configurar PostgreSQL, Gunicorn e Nginx para rodar o sistema de forma estável e segura em servidores Linux.
