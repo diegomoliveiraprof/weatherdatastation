@@ -76,7 +76,7 @@ Inicializar o banco:
 ```
 sudo postgresql-setup initdb
 sudo systemctl enable postgresql
-sudo systemctl start 
+sudo systemctl start  postgresql
 ```
 
 
