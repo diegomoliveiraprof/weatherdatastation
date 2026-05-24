@@ -42,18 +42,36 @@ O upload de arquivos JSON exige autenticação via Token.
 
 Exemplo de requisição
 ```Código
-POST /api/upload/ HTTP/1.1
-Host: SEU_IP:8000
-Authorization: Token SEU_TOKEN
-Content-Type: application/json
-
-{
-  "DHT22_Temp": "27.50",
-  "DHT22_Umid": "53.80",
+curl -X POST http://seu_ip:8000/api/upload/ \
+  -H "Authorization: Token seu_token" \
+  -H "Content-Type: application/json" \
+  -d '{
   "DataHora": "2026-05-21 13:08:25",
-  ...
-}
-
+  "DHT22_Temp": "27.5",
+  "DHT22_Umid": "53.8",
+  "DHT22_IndCalor": "29.1",
+  "MQ2": "0.02",
+  "BME280_Temp": "26.9",
+  "BME280_Umi": "55.1",
+  "BME280_Press": "1013.25",
+  "BME280_Alti": "850.0",
+  "GY30_Lux": "320.5",
+  "GY30_ClassLux": "Moderado",
+  "UVGYML8511_UV": "5.2",
+  "UVGYML8511_Tensao": "1.8",
+  "UVGYML8511_Saida": "0.75",
+  "MQ137_PPMMedia": "0.15",
+  "MQ137_PPMInstant": "0.20",
+  "UVcjmcu_IndiUV": "3.1",
+  "MQ3": "0.05",
+  "MQ4": "0.08",
+  "MQ7": "0.12",
+  "Pluvio_MM": "2.5",
+  "Anemo_VelMS": "3.2",
+  "Anemo_VelKMH": "11.5",
+  "Anemo_Grau": "180.0",
+  "Anemo_Direcao": "Sul"
+}'
   ```
 ---
 
