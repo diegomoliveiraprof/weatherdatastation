@@ -1,4 +1,4 @@
-# 🌦️ Weather Data System (WDS)
+# 🌦️ API - Weather Data Station (WDS)
 
 Este projeto é uma aplicação **Django + Django REST Framework** para coleta, armazenamento e exposição de dados meteorológicos provenientes de sensores como DHT22, BME280, MQ-series, GY30, UV GYML8511, entre outros.
 
