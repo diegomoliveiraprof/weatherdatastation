@@ -84,5 +84,5 @@ Explica como configurar rapidamente o projeto para rodar com python3 manage.py r
 [Guia para ambiente de produção / deploy](https://github.com/diegomoliveiraprof/weatherdatastation/blob/main/guia_deploy.md)  
 Detalha como configurar PostgreSQL, Gunicorn e Nginx para rodar o sistema de forma estável e segura em servidores Linux.
 
-[HTTPS Certificado autoassinado](https://github.com/diegomoliveiraprof/weatherdatastation/blob/main/https.md)  
+[HTTPS Certificado autoassinado](https://github.com/diegomoliveiraprof/weatherdatastation/blob/main/https.md) 
 Configuração do certificado para HTTPS autoassinado.
