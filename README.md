@@ -37,6 +37,7 @@ Integração com PostgreSQL para persistência dos dados.
 - `GET /api/weather/?page=2` → retorna a segunda página com mais 10 registros.
 - `GET /api/weather/?page=1&page_size=5` → retorna os 5 últimos registros.
 - `GET /api/weather/?page=1&page_size=50` → retorna os 50 últimos registros.
+- `GET /api/weather/?page_size=100` → retorna 50 registros (limitado pelo max_page_size).
 
 ---
 
