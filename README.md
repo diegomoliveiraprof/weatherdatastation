@@ -30,10 +30,13 @@ Integração com PostgreSQL para persistência dos dados.
 ## 📄 Endpoints
 
 - `POST /api/upload/` → Upload de arquivo CSV (autenticado).
-- `GET /api/weather/` → Consulta dos dados meteorológicos (sem autenticação).
 - `GET /api/schema/` → Schema OpenAPI em JSON.
 - `GET /api/docs/` → Swagger UI.
 - `GET /api/redoc/` → ReDoc.
+- `GET /api/weather/` → Consulta dos dados meteorológicos (sem autenticação) - retorna os 10 últimos registros por padrão (página 1).
+- `GET /api/weather/?page=2` → retorna a segunda página com mais 10 registros.
+- `GET /api/weather/?page=1&page_size=5` → retorna os 5 últimos registros.
+- `GET /api/weather/?page=1&page_size=50` → retorna os 50 últimos registros.
 
 ---
 
